@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS tasks;
+CREATE TABLE tasks(
+  id SERIAL PRIMARY KEY,
+  text VARCHAR,
+  completed BOOLEAN DEFAULT FALSE,
+  priority INTEGER DEFAULT 2
+);
