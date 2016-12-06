@@ -10,4 +10,6 @@ router.get('/', (request, response, next) => {
 
 router.post('/task', Task.add )
 
+router.get('/task', Task.getAll )
+
 module.exports = router;
