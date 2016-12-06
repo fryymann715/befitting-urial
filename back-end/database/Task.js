@@ -2,29 +2,24 @@ const db = require('./db')
 
 const Task = {
 
-    add: ( req, res, next ) => {
-
-      const {text} = req.body
-      console.log(text)
-      db.one(`INSERT INTO tasks (text) VALUES ('${text}') returning id`)
-      .then(id => res.status(200).json({ status : 'success', data : id, message : 'SUCCESSFUL ADD'}))
+    add: ( request, response, next ) => {
+      const { text } = request.body
+      db.one( `INSERT INTO tasks (text) VALUES ('${text}') returning id` ).then( id => {
+        response.status(200).json({ status : 'success', data : id, message : 'SUCCESSFUL ADD' })
+      })
     },
-    getAll: (req, res, next) => {
-      db.many(`SELECT * FROM tasks`)
-      .then(tasks => res.status(200).json({status : 'success', data : tasks, message : 'SUCCESSFUL RETRIEVAL'}))
+    getAll: ( request, response, next ) => {
+      db.many( `SELECT * FROM tasks` ).then(tasks => {
+        response.status(200).json({status : 'success', data : tasks, message : 'SUCCESSFUL RETRIEVAL'})
+      })
     },
-    /*
-    delete: (req, res, next) => {
-      db.any(``)
-      .then()
-    }
-    update: (req, res, next) => {
-      db.any(`INSERT INTO tasks (req, res) VALUES ($1, $2) RETURNING *`)
-      .then(id => res.status(200).json({status : 'success', data : tasks, message : 'SUCCESSFUL CREATION'}))
+    update: ( request, response, next ) => {
+      const { text, id } = request.body
+      db.one( `UPDATE tasks SET text= '${text}' WHERE id = ${id} RETURNING *` ).then( task => response.status(200).json({status : 'success', data : task, message : 'SUCCESSFUL UPDATE'}))
     }
     //delete
     //mark as completed or get individual item
-    */
+    /**/
 }
 
 module.exports = Task;
