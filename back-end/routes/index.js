@@ -11,5 +11,6 @@ router.get('/', (request, response, next) => {
 router.post('/task', Task.add )
 
 router.get('/task', Task.getAll )
+router.put('/task', Task.update )
 
 module.exports = router;
