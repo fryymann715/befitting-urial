@@ -17,8 +17,6 @@ class App extends Component {
     fetch( fetchString, fetchIsHappenning )
     .then( data => data.json() )
     .then( data => {
-      console.log(data)
-
     })
 
 }

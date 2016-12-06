@@ -16,7 +16,6 @@ export default class HelloBox extends Component {
 
   onSave( event ) {
     if ( event.key === 'Enter' ) {
-      console.log('SUBMITTED')
     }
   }
 
