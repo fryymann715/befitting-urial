@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+const cors = require('cors')
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -21,6 +22,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use( ( request, response, next ) => {
+
+    if (request.method === "OPTIONS") {
+      response.header('Access-Control-Allow-Origin', request.headers.origin)
+    } else {
+      response.header('Access-Control-Allow-Origin', '*')
+    }
+
+    next()
+})
 
 app.use('/', index);
 app.use('/users', users);
