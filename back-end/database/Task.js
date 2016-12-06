@@ -24,8 +24,22 @@ const Task = {
     },
 
     update: ( request, response, next ) => {
-      const { text, id } = request.body
-      db.one( `UPDATE tasks SET text= '${text}' WHERE id = ${id} RETURNING *` ).then( task => response.status(200).json({status : 'success', data : task, message : 'SUCCESSFUL UPDATE'}))
+      const { id, text, completed } = request.body
+
+      if ( completed ) {
+        db.one(`UPDATE tasks SET completed=True WHERE id = 7 RETURNING *`)
+        .then( task => response.status( 200 ).json({ status: 'success', data: task, message: 'SUCCESSFULL UPDATE OF COMPLETION' }) )
+        .catch( error => next( error ) )
+      }
+      else if ( text !== undefined && text !== '' ) {
+        db.one( `UPDATE tasks SET text= '${text}' WHERE id = ${id} RETURNING *` )
+        .then( task => response.status(200).json({status : 'success', data : task, message : 'SUCCESSFULLY UPDATED TASK TEXT'}))
+        .catch( error => next( error ))
+      } else {
+        console.log("Client did not specify an update parameter.")
+        response.status(406).json({ status: 'failure', message: 'You suck' })
+      }
+
     },
 
     delete: ( request, response, next ) => {
