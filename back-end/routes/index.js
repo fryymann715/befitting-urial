@@ -9,8 +9,11 @@ router.get('/', (request, response, next) => {
 });
 
 router.post('/task', Task.add )
-
 router.get('/task', Task.getAll )
+//router.get('/task/:id', Task.getById )
 router.put('/task', Task.update )
+router.delete('/task/:id', Task.delete )
+
+
 
 module.exports = router;
