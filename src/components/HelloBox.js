@@ -6,17 +6,26 @@ export default class HelloBox extends Component {
     this.state = {
       textString: ''
     }
+    this.onChange = this.onChange.bind( this )
+    this.onSave = this.onSave.bind( this )
   }
 
-  handleChange( event ) {
+  onChange( event ) {
     this.setState({ textString: event.target.value })
+  }
+
+  onSave( event ) {
+    if ( event.key === 'Enter' ) {
+      console.log('SUBMITTED')
+    }
   }
 
   render() {
     return (
       <div>
-        <span>Hello, I am box.</span>
-        <input type="text" value={this.state.textString} onChange={this.handleChange} />
+        <form action="http://localhost:5000/task" method="post">
+        <input name="text" type="text" value={this.state.textString} onChange={this.onChange} onSubmit={this.onSave} />
+      </form>
       </div>
     )
   }
