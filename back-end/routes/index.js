@@ -8,6 +8,6 @@ router.get('/', (request, response, next) => {
                               message: 'SUCCESS!!!'})
 });
 
-router.post('/task', Task.add)
+router.post('/task', Task.add )
 
 module.exports = router;
