@@ -4,10 +4,10 @@ const Task = {
 
     add: ( request, response, next ) => {
       const { text } = request.body
-      db.none( `INSERT INTO tasks (text) VALUES ('${text}')` )
-      .then( response.status(200).json({ status : 'success', message : 'SUCCESSFUL ADD' })
+      db.any( `INSERT INTO tasks (text) VALUES ('${text}') RETURNING *` )
+      .then( task => {
+        response.status(200).json({ status: 'success', data: task[0], message: 'SUCCESSFUL ADD' })} )
       .catch( error => next( error ))
-      )
     },
 
     getAll: ( request, response, next ) => {
@@ -27,7 +27,7 @@ const Task = {
       const { id, text, completed } = request.body
 
       if ( completed ) {
-        db.one(`UPDATE tasks SET completed=True WHERE id = 7 RETURNING *`)
+        db.one(`UPDATE tasks SET completed=True WHERE id = ${id} RETURNING *`)
         .then( task => response.status( 200 ).json({ status: 'success', data: task, message: 'SUCCESSFULL UPDATE OF COMPLETION' }) )
         .catch( error => next( error ) )
       }
@@ -36,10 +36,8 @@ const Task = {
         .then( task => response.status(200).json({status : 'success', data : task, message : 'SUCCESSFULLY UPDATED TASK TEXT'}))
         .catch( error => next( error ))
       } else {
-        console.log("Client did not specify an update parameter.")
         response.status(406).json({ status: 'failure', message: 'You suck' })
       }
-
     },
 
     delete: ( request, response, next ) => {
