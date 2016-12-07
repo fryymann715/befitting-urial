@@ -10,11 +10,11 @@ const EntryBox = ({ onChange, textString, onSave }) => {
 
   return (
     <div className="entry-box">
-      <h3> Add a Task </h3>
-      <input placeholder="Add a Task"
+      <input className="entry-input"
+        placeholder="Add a Task"
         onChange={onChange}
         value={textString}
-      onKeyDown={onKeyDown} />
+        onKeyDown={onKeyDown} />
     </div>
   )
 }

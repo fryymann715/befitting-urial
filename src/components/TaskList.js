@@ -23,10 +23,8 @@ const TaskList = ({ tasks }) => {
 
   return (
     <div className="list">
-      <h5>TaskList Component</h5>
-      <ul>
+      <h5>Current Tasks:</h5>
         {taskItems}
-      </ul>
     </div>
   )
 }

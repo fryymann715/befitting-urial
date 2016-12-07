@@ -2,10 +2,10 @@ import React, { PropTypes } from 'react'
 
 const TaskItem = ({ id, text, completed }) => {
   return (
-    <li className="topic-item" key={id}>
+    <div className="task-item" key={id}>
       <span>{text}</span>
       <span>{completed}</span>
-    </li>
+    </div>
   )
 }
 
