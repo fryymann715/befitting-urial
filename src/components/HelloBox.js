@@ -1,32 +1,28 @@
-import React, { Component } from 'react'
+import React, { PropTypes } from 'react'
 
-export default class HelloBox extends Component {
-  constructor( props ) {
-    super( props )
-    this.state = {
-      textString: ''
-    }
-    this.onChange = this.onChange.bind( this )
-    this.onSave = this.onSave.bind( this )
-  }
+const EntryBox = ({ onChange, textString, onSave }) => {
 
-  onChange( event ) {
-    this.setState({ textString: event.target.value })
-  }
-
-  onSave( event ) {
-    if ( event.key === 'Enter' ) {
-      
+  const onKeyDown = ( event ) => {
+    if ( event.keyCode === 13 ) {
+      onSave()
     }
   }
 
-  render() {
-    return (
-      <div>
-        <form action="http://localhost:5000/task" method="post">
-        <input name="text" type="text" value={this.state.textString} onChange={this.onChange} onSubmit={this.onSave} />
-      </form>
-      </div>
-    )
-  }
+  return (
+    <div className="entry-box">
+      <h3> Add a Task </h3>
+      <input placeholder="Add a Task"
+        onChange={onChange}
+        value={textString}
+      onKeyDown={onKeyDown} />
+    </div>
+  )
 }
+
+EntryBox.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  textString: PropTypes.string
+}
+
+export default EntryBox

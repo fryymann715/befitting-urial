@@ -4,10 +4,11 @@ const Task = {
 
     add: ( request, response, next ) => {
       const { text } = request.body
-      db.none( `INSERT INTO tasks (text) VALUES ('${text}')` )
-      .then( response.status(200).json({ status : 'success', message : 'SUCCESSFUL ADD' })
+      db.any( `INSERT INTO tasks (text) VALUES ('${text}') RETURNING *` )
+      .then( task => {
+        console.log("TASK!!!", task[0] )
+        response.status(200).json({ status: 'success', data: task[0], message: 'SUCCESSFUL ADD' })} )
       .catch( error => next( error ))
-      )
     },
 
     getAll: ( request, response, next ) => {
@@ -27,7 +28,7 @@ const Task = {
       const { id, text, completed } = request.body
 
       if ( completed ) {
-        db.one(`UPDATE tasks SET completed=True WHERE id = 7 RETURNING *`)
+        db.one(`UPDATE tasks SET completed=True WHERE id = ${id} RETURNING *`)
         .then( task => response.status( 200 ).json({ status: 'success', data: task, message: 'SUCCESSFULL UPDATE OF COMPLETION' }) )
         .catch( error => next( error ) )
       }
