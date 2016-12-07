@@ -51,8 +51,8 @@ class App extends Component {
       const taskArray = this.state.tasks
       const task = raw_task.data
       taskArray.push(task)
-      this.setState({ textString: '' })
-      this.forceUpdate() })
+      this.setState({ textString: '', tasks: taskArray })
+    })
     .catch( error => console.log( error ) )
   }
 

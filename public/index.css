@@ -3,10 +3,43 @@
 }
 
 #app {
+  margin-top: 100px;
   margin-left: auto;
   margin-right: auto;
+  min-width: 70%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
+}
+
+.entry-input {
+  width: 100%;
+  align-self: center;
+  box-shadow: 0 2px 4px 0 black;
+}
+
+.list {
+  min-width: 80%;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-item {
+  margin: 5px;
+  padding: 5px;
+  /*border: solid black 1px;*/
+  box-shadow: 0 2px 4px 0 black;
+  max-width: 90%;
+  align-items: center;
+}
+
+.task-item:hover {
+  box-shadow: 0 4px 8px 0 red;
 }
