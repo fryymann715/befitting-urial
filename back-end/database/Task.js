@@ -6,7 +6,6 @@ const Task = {
       const { text } = request.body
       db.any( `INSERT INTO tasks (text) VALUES ('${text}') RETURNING *` )
       .then( task => {
-        console.log("TASK!!!", task[0] )
         response.status(200).json({ status: 'success', data: task[0], message: 'SUCCESSFUL ADD' })} )
       .catch( error => next( error ))
     },
@@ -37,10 +36,8 @@ const Task = {
         .then( task => response.status(200).json({status : 'success', data : task, message : 'SUCCESSFULLY UPDATED TASK TEXT'}))
         .catch( error => next( error ))
       } else {
-        console.log("Client did not specify an update parameter.")
         response.status(406).json({ status: 'failure', message: 'You suck' })
       }
-
     },
 
     delete: ( request, response, next ) => {
