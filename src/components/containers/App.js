@@ -37,12 +37,25 @@ class App extends Component {
   }
 
   onComplete({ event , id }) {
-    console.log("EVENT", id)
+
     const tasks = this.state.tasks
-    tasks.forEach( task => {
-      if ( task.id === id ){ task.completed = true }
+
+    const fetchIsHappenning = {
+      method: 'PUT',
+      mode: 'cors',
+      headers: new Headers({ 'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+                             'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8' }),
+      body: `completed=True&id=${id}`
+    }
+    const fetchString = `http://localhost:5000/task`
+    fetch( fetchString, fetchIsHappenning )
+    .then( () => {
+      tasks.forEach( task => {
+        if ( task.id === id ){ task.completed = true }
+      })
+      this.setState({ tasks })
     })
-    this.setState({ tasks })
+
   }
 
   onSave() {
