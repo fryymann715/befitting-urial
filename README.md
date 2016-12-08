@@ -2,18 +2,18 @@
 
 ## Specs
 
-- [] - Display Tasks
-- [] - Add a new Task
+- [x] - Display Tasks
+- [x] - Add a new Task
 - [] - Update tasks
 - [] - Delete tasks
-- [] - Mark tasks as complete
+- [x] - Mark tasks as complete
 - [] - Set priority for tasks
 
-- [] - Use Postgres for database
-- [] - Handle database interactions using pg-promise
-- [] - Create a simple front end using React and React-Router
-- [] - Send data from the backend using restful API
-- [] - Enable CORS on server
+- [x] - Use Postgres for database
+- [x] - Handle database interactions using pg-promise
+- [x] - Create a simple front end using React and React-Router
+- [x] - Send data from the backend using restful API
+- [x] - Enable CORS on server
 
 ## Stretch Goals
 
