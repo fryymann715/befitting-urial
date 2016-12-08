@@ -4,9 +4,9 @@ import AppContainer from '../containers/App'
 
 const App = () => (
 
-    <div className={style.root}>
-      <AppContainer />
-    </div>
+      <div className={style.root}>
+        <AppContainer />
+      </div>
 )
 
 export default App

@@ -34,10 +34,17 @@
 .task-item {
   margin: 5px;
   padding: 5px;
+  width: 300px;
   /*border: solid black 1px;*/
   box-shadow: 0 2px 4px 0 black;
   max-width: 90%;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+}
+
+.task-item span {
+  width: 50%;
 }
 
 .completed {

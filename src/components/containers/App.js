@@ -13,6 +13,8 @@ class App extends Component {
     this.onChange = this.onChange.bind( this )
     this.onSave = this.onSave.bind( this )
     this.onComplete = this.onComplete.bind( this )
+    this.onSortUp = this.onSortUp.bind( this )
+    this.updatePriority = this.updatePriority.bind( this )
   }
 
   componentDidMount() {
@@ -36,18 +38,19 @@ class App extends Component {
     this.setState({ textString: event.target.value })
   }
 
-  onComplete({ event , id }) {
+  onComplete({ id }) {
 
     const tasks = this.state.tasks
 
     const fetchIsHappenning = {
       method: 'PUT',
       mode: 'cors',
-      headers: new Headers({ 'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-                             'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8' }),
+      headers: new Headers({
+        'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8' }),
       body: `completed=True&id=${id}`
     }
-    const fetchString = `http://localhost:5000/task`
+    const fetchString = 'http://localhost:5000/task'
     fetch( fetchString, fetchIsHappenning )
     .then( () => {
       tasks.forEach( task => {
@@ -59,24 +62,68 @@ class App extends Component {
   }
 
   onSave() {
+
+    const taskArray = this.state.tasks
+    const nextPriority = taskArray.length
+
     const taskText = this.state.textString
     const fetchIsHappenning = {
       method: 'POST',
       mode: 'cors',
-      headers: new Headers({ 'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-                             'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8' }),
-      body: `text=${taskText}`
+      headers: new Headers({
+        'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8' }),
+      body: `text=${taskText}&priority=${nextPriority}`
     }
     const fetchString = 'http://localhost:5000/task'
     fetch( fetchString, fetchIsHappenning )
     .then( response => response.json() )
     .then( raw_task => {
-      const taskArray = this.state.tasks
       const task = raw_task.data
       taskArray.push(task)
       this.setState({ textString: '', tasks: taskArray })
     })
-    .catch( error => console.log( error ) )
+    .catch( error => console.error( error ) )
+  }
+
+  onSortUp({ id }) {
+    console.log("ID:", id)
+    const tasks = this.state.tasks
+    let taskPriority, swapID, swapPriority
+
+    for ( let index in tasks ) {
+      if ( tasks[index].id === id ) {
+        taskPriority = tasks[index].priority
+        swapID = tasks[index-1].id
+        swapPriority = tasks[index-1].priority
+      }
+    }
+    console.log("SWAP ID ", swapID)
+    this.updatePriority( id, swapPriority )
+    this.updatePriority( swapID, taskPriority )
+    //
+    // const resortedTasks = []
+    //
+    // for( let i=0; i < tasks.length; i++) {
+    //
+    //
+    // }
+    //
+    // this.setState({ tasks: resortedTasks })
+  }
+
+  updatePriority( id, priority ) {
+    const fetchIsHappenning = {
+      method: 'PUT',
+      mode: 'cors',
+      headers: new Headers({
+        'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8' }),
+      body: `priority=${priority}&id=${id}`
+    }
+    const fetchString = 'http://localhost:5000/task'
+    fetch( fetchString, fetchIsHappenning )
+
   }
 
   render() {
@@ -85,7 +132,7 @@ class App extends Component {
         <div>
           <EntryBox onChange={this.onChange} textString={this.state.textString} onSave={this.onSave}/>
         </div>
-        <TaskList onComplete={this.onComplete} tasks={this.state.tasks} />
+        <TaskList onComplete={this.onComplete} onSortUp={this.onSortUp} tasks={this.state.tasks} />
       </div>
     )
   }

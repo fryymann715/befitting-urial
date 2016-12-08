@@ -3,15 +3,15 @@ const db = require('./db')
 const Task = {
 
     add: ( request, response, next ) => {
-      const { text } = request.body
-      db.any( `INSERT INTO tasks (text) VALUES ('${text}') RETURNING *` )
+      const { text, priority } = request.body
+      db.any( `INSERT INTO tasks (text, priority) VALUES ('${text}', '${priority}') RETURNING *` )
       .then( task => {
         response.status(200).json({ status: 'success', data: task[0], message: 'SUCCESSFUL ADD' })} )
       .catch( error => next( error ))
     },
 
     getAll: ( request, response, next ) => {
-      db.many( `SELECT * FROM tasks` )
+      db.query( `SELECT * FROM tasks ORDER BY priority ASC` )
       .then(tasks => response.status(200).json({status : 'success', data : tasks, message : 'SUCCESSFUL RETRIEVAL'}))
       .catch( error => next( error ))
     },
@@ -24,11 +24,16 @@ const Task = {
     },
 
     update: ( request, response, next ) => {
-      const { id, text, completed } = request.body
+      const { id, text, completed, priority } = request.body
       console.log(completed)
 
       if ( completed ) {
         db.one(`UPDATE tasks SET completed=True WHERE id = ${id} RETURNING *`)
+        .then( task => response.status( 200 ).json({ status: 'success', data: task, message: 'SUCCESSFULL UPDATE OF COMPLETION' }) )
+        .catch( error => next( error ) )
+      }
+      else if ( priority ) {
+        db.one(`UPDATE tasks SET priority=${priority} WHERE id = ${id} RETURNING *`)
         .then( task => response.status( 200 ).json({ status: 'success', data: task, message: 'SUCCESSFULL UPDATE OF COMPLETION' }) )
         .catch( error => next( error ) )
       }
