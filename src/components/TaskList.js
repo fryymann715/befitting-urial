@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import TaskItem from './TaskItem'
 
-const TaskList = ({ tasks, onComplete, onSortUp }) => {
+const TaskList = ({ tasks, onComplete, onSort }) => {
 
   const taskItems = tasks.map( (task, key) => {
 
@@ -19,7 +19,7 @@ const TaskList = ({ tasks, onComplete, onSortUp }) => {
         id={task.id}
         text={task.text}
         onComplete={onComplete}
-        onSortUp={onSortUp}
+        onSort={onSort}
         classString={classString}
         />
     )
@@ -44,7 +44,7 @@ const TaskList = ({ tasks, onComplete, onSortUp }) => {
 TaskList.propTypes = {
   tasks: PropTypes.array,
   onComplete: PropTypes.func,
-  onSortUp: PropTypes.func.isRequired,
+  onSort: PropTypes.func.isRequired,
 }
 
 export default TaskList

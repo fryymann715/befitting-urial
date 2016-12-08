@@ -13,7 +13,7 @@ class App extends Component {
     this.onChange = this.onChange.bind( this )
     this.onSave = this.onSave.bind( this )
     this.onComplete = this.onComplete.bind( this )
-    this.onSortUp = this.onSortUp.bind( this )
+    this.onSort = this.onSort.bind( this )
     this.updatePriority = this.updatePriority.bind( this )
   }
 
@@ -86,30 +86,62 @@ class App extends Component {
     .catch( error => console.error( error ) )
   }
 
-  onSortUp({ id }) {
-    console.log("ID:", id)
+  onSort({ id, isUp }) {
+
     const tasks = this.state.tasks
     let taskPriority, swapID, swapPriority
 
     for ( let index in tasks ) {
       if ( tasks[index].id === id ) {
         taskPriority = tasks[index].priority
-        swapID = tasks[index-1].id
-        swapPriority = tasks[index-1].priority
       }
     }
-    console.log("SWAP ID ", swapID)
+    console.log(tasks.length);
+
+    if ( taskPriority <= 0 && isUp ){
+      return
+    }
+
+    if ( taskPriority >= tasks.length - 1 && !isUp ){
+      return
+    }
+
+    if ( isUp ){
+      swapID = tasks[ taskPriority - 1 ].id
+      swapPriority = taskPriority - 1
+     }
+
+     else {
+       swapID = tasks[ taskPriority + 1 ].id
+       swapPriority = taskPriority + 1
+     }
+
+
     this.updatePriority( id, swapPriority )
     this.updatePriority( swapID, taskPriority )
-    //
-    // const resortedTasks = []
-    //
-    // for( let i=0; i < tasks.length; i++) {
-    //
-    //
-    // }
-    //
-    // this.setState({ tasks: resortedTasks })
+
+    const unsortedTasks = tasks.map( task => {
+      if ( task.id === id ) {
+        task.priority = swapPriority
+      }
+      else if ( task.id === swapID ) {
+        task.priority= taskPriority
+      }
+      return task
+    })
+
+    const sortedTasks = []
+
+    for( let i=0; i < unsortedTasks.length; i++) {
+
+      for( let x=0; x < unsortedTasks.length; x++ ) {
+        if ( unsortedTasks[x].priority === i ){
+          sortedTasks.push( unsortedTasks[ x ] )
+        }
+      }
+    }
+
+    this.setState({ tasks: sortedTasks })
   }
 
   updatePriority( id, priority ) {
@@ -128,11 +160,9 @@ class App extends Component {
 
   render() {
     return (
-      <div className="container app">
-        <div>
-          <EntryBox onChange={this.onChange} textString={this.state.textString} onSave={this.onSave}/>
-        </div>
-        <TaskList onComplete={this.onComplete} onSortUp={this.onSortUp} tasks={this.state.tasks} />
+      <div className="app">
+        <EntryBox onChange={this.onChange} textString={this.state.textString} onSave={this.onSave}/>
+        <TaskList onComplete={this.onComplete} onSort={this.onSort} tasks={this.state.tasks} />
       </div>
     )
   }

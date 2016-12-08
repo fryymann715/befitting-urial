@@ -2,25 +2,35 @@
   box-sizing: border-box;
 }
 
-#app {
+.app {
   margin-top: 100px;
   margin-left: auto;
   margin-right: auto;
-  min-width: 70%;
+  width: 70%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
 }
 
-.entry-input {
+.container {
+  width: 90%;
+}
+
+.entry-box {
+  width: 100%;
+
+}
+
+.entry-box input {
   width: 100%;
   align-self: center;
   box-shadow: 0 2px 4px 0 black;
+  font-size: 20px;
 }
 
 .list {
-  min-width: 80%;
+  width: 95%;
   margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
@@ -34,13 +44,18 @@
 .task-item {
   margin: 5px;
   padding: 5px;
-  width: 300px;
-  /*border: solid black 1px;*/
   box-shadow: 0 2px 4px 0 black;
-  max-width: 90%;
+  width: 90%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.task-item button {
+  background-color: rgb(20, 153, 212);
+  border: ridge white 1px;
+  box-shadow: 0 1px 2px 0 black;
+  margin-right: 5px;
 }
 
 .task-item span {
@@ -49,6 +64,9 @@
 
 .completed {
   background-color: rgba(29, 179, 26, 0.72);
+  font-style: italic;
+  text-decoration: line-through;
+  color: white;
 }
 
 .task-item:hover {

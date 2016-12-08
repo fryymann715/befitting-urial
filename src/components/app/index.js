@@ -1,10 +1,9 @@
 import React from 'react'
-import style from './style.css'
 import AppContainer from '../containers/App'
 
 const App = () => (
 
-      <div className={style.root}>
+      <div>
         <AppContainer />
       </div>
 )
