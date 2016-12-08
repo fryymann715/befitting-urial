@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 
 
-const TaskItem = ({ id, text, completed, onComplete, classString }) => {
+const TaskItem = ({ id, text, onComplete, onSort, classString }) => {
 
   const handleClick = (event) => {
     if ( event.type === 'dblclick' ){
@@ -10,20 +10,33 @@ const TaskItem = ({ id, text, completed, onComplete, classString }) => {
     }
   }
 
+  const handleOnSortUp = () => {
+    onSort({ id: id, isUp: true })
+  }
+
+  const handleOnSortDown = () => {
+    onSort({ id: id })
+  }
+
 
   return (
-    <div className={classString} onDoubleClick={handleClick} key={id}>
-      <span>{text}</span>
-      <span>{completed}</span>
-    </div>
+      <div className={classString} onDoubleClick={handleClick} key={id}>
+        <span>{text}</span>
+        <div className="task-buttons">
+          <button onClick={handleOnSortUp}>&#8593;</button>
+          <button onClick={handleOnSortDown}>&#8595;</button>
+        </div>
+      </div>
   )
 }
 
 TaskItem.propTypes = {
-  completed:    PropTypes.bool.isRequired,
+  classString:  PropTypes.string.isRequired,
+  handleClick:  PropTypes.func,
   id:           PropTypes.number.isRequired,
+  onComplete:   PropTypes.func,
+  onSort:       PropTypes.func.isRequired,
   text:         PropTypes.string.isRequired,
-  handleClick:  PropTypes.func
 }
 
 export default TaskItem

@@ -4,7 +4,7 @@ import { Router, Route, browserHistory } from 'react-router'
 import App from './components/app'
 
 render((
-    <Router history={browserHistory}>
-        <Route path="/" component={App} />
-    </Router>
+      <Router history={browserHistory}>
+          <Route component={App} path="/" />
+      </Router>
 ), document.getElementById('app'))
