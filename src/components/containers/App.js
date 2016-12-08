@@ -12,6 +12,7 @@ class App extends Component {
     }
     this.onChange = this.onChange.bind( this )
     this.onSave = this.onSave.bind( this )
+    this.onComplete = this.onComplete.bind( this )
   }
 
   componentDidMount() {
@@ -33,6 +34,28 @@ class App extends Component {
 
   onChange( event ) {
     this.setState({ textString: event.target.value })
+  }
+
+  onComplete({ event , id }) {
+
+    const tasks = this.state.tasks
+
+    const fetchIsHappenning = {
+      method: 'PUT',
+      mode: 'cors',
+      headers: new Headers({ 'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+                             'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8' }),
+      body: `completed=True&id=${id}`
+    }
+    const fetchString = `http://localhost:5000/task`
+    fetch( fetchString, fetchIsHappenning )
+    .then( () => {
+      tasks.forEach( task => {
+        if ( task.id === id ){ task.completed = true }
+      })
+      this.setState({ tasks })
+    })
+
   }
 
   onSave() {
@@ -62,7 +85,7 @@ class App extends Component {
         <div>
           <EntryBox onChange={this.onChange} textString={this.state.textString} onSave={this.onSave}/>
         </div>
-        <TaskList tasks={this.state.tasks} />
+        <TaskList onComplete={this.onComplete} tasks={this.state.tasks} />
       </div>
     )
   }

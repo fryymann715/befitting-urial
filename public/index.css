@@ -40,6 +40,10 @@
   align-items: center;
 }
 
+.completed {
+  background-color: rgba(29, 179, 26, 0.72);
+}
+
 .task-item:hover {
   box-shadow: 0 4px 8px 0 red;
 }

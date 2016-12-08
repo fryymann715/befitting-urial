@@ -25,6 +25,7 @@ const Task = {
 
     update: ( request, response, next ) => {
       const { id, text, completed } = request.body
+      console.log(completed)
 
       if ( completed ) {
         db.one(`UPDATE tasks SET completed=True WHERE id = ${id} RETURNING *`)
