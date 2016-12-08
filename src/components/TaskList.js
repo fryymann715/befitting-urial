@@ -17,13 +17,13 @@ const TaskList = ({ tasks, onComplete, onDelete, onSort }) => {
       <TaskItem
         key={key}
         id={task.id}
-        text={task.text}
+        classString={classString}
         completed={task.completed}
         onComplete={onComplete}
         onDelete={onDelete}
         onSort={onSort}
-        classString={classString}
-        />
+        text={task.text}
+      />
     )
   })
 
