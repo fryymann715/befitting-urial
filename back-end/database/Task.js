@@ -26,12 +26,7 @@ const Task = {
     update: ( request, response, next ) => {
       const { id, text, completed, priority } = request.body
 
-      if ( completed ) {
-        db.one(`UPDATE tasks SET completed=True WHERE id = ${id} RETURNING *`)
-        .then( task => response.status( 200 ).json({ status: 'success', data: task, message: 'SUCCESSFULL UPDATE OF COMPLETION' }) )
-        .catch( error => next( error ) )
-      }
-      else if ( priority ) {
+      if ( priority ) {
         db.one(`UPDATE tasks SET priority=${priority} WHERE id = ${id} RETURNING *`)
         .then( task => response.status( 200 ).json({ status: 'success', data: task, message: 'SUCCESSFULL UPDATE OF COMPLETION' }) )
         .catch( error => next( error ) )
@@ -40,7 +35,14 @@ const Task = {
         db.one( `UPDATE tasks SET text= '${text}' WHERE id = ${id} RETURNING *` )
         .then( task => response.status(200).json({status : 'success', data : task, message : 'SUCCESSFULLY UPDATED TASK TEXT'}))
         .catch( error => next( error ))
-      } else {
+      }
+      else if ( completed !== undefined ) {
+        console.log( "COMPLETED: ", completed)
+        db.one(`UPDATE tasks SET completed=${completed} WHERE id = ${id} RETURNING *`)
+        .then( task => response.status( 200 ).json({ status: 'success', data: task, message: 'SUCCESSFULL UPDATE OF COMPLETION' }) )
+        .catch( error => next( error ) )
+      }
+      else {
         response.status(406).json({ status: 'failure', message: 'You suck' })
       }
     },
