@@ -1,11 +1,24 @@
 import React, { PropTypes } from 'react'
 
 
-const TaskItem = ({ id, text, onComplete, onDelete, onSort, classString }) => {
+const TaskItem = ({ completed, id, text, onComplete, onDelete, onSort, classString }) => {
 
   const handleComplete = (event) => {
     if ( event.type === 'dblclick' ){
-      const options = { event: event, id: id }
+
+      console.log("CLICKING")
+
+      let options
+
+      if( completed ){
+        options = { id: id, completed: false }
+        console.log("TRUE:", completed)
+      }
+      else {
+        options = { id: id, completed: true }
+        console.log("FALSE:", completed)
+      }
+
       onComplete(options)
     }
 
@@ -39,6 +52,7 @@ const TaskItem = ({ id, text, onComplete, onDelete, onSort, classString }) => {
 
 TaskItem.propTypes = {
   classString:  PropTypes.string.isRequired,
+  completed: PropTypes.bool.isRequired,
   handleClick:  PropTypes.func,
   id: PropTypes.number.isRequired,
   onComplete: PropTypes.func.isRequired,

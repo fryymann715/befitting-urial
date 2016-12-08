@@ -18,6 +18,7 @@ const TaskList = ({ tasks, onComplete, onDelete, onSort }) => {
         key={key}
         id={task.id}
         text={task.text}
+        completed={task.completed}
         onComplete={onComplete}
         onDelete={onDelete}
         onSort={onSort}

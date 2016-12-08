@@ -40,7 +40,7 @@ class App extends Component {
     this.setState({ textString: event.target.value })
   }
 
-  onComplete({ id }) {
+  onComplete({ id, completed }) {
 
     const tasks = this.state.tasks
     const fetchIsHappenning = {
@@ -49,13 +49,13 @@ class App extends Component {
       headers: new Headers({
         'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8' }),
-      body: `completed=True&id=${id}`
+      body: `completed=${completed}&id=${id}`
     }
     const fetchString = this.state.fetchString
     fetch( fetchString, fetchIsHappenning )
     .then( () => {
       tasks.forEach( task => {
-        if ( task.id === id ){ task.completed = true }
+        if ( task.id === id ){ task.completed = completed }
       })
       this.setState({ tasks })
     })
@@ -193,7 +193,7 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-        <EntryBox onChange={this.onChange} textString={this.state.textString} onSave={this.onSave}/>
+        <EntryBox onChange={this.onChange} textString={this.state.textString} onSave={this.onSave} />
         <TaskList onComplete={this.onComplete} onDelete={this.onDelete} onSort={this.onSort} tasks={this.state.tasks} />
       </div>
     )
