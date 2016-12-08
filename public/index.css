@@ -12,9 +12,19 @@
   align-items: center;
   justify-content: space-between;
 }
+.btn {
+  border: ridge white 1px;
+  box-shadow: 0 1px 2px 0 black;
+  margin-right: 5px;
+}
 
 .container {
   width: 90%;
+}
+
+.delete {
+  background-color: red;
+  color: white;
 }
 
 .entry-box {
@@ -41,6 +51,10 @@
   justify-content: center;
 }
 
+.sort {
+  background-color: rgb(20, 153, 212);
+}
+
 .task-item {
   margin: 5px;
   padding: 5px;
@@ -52,10 +66,7 @@
 }
 
 .task-item button {
-  background-color: rgb(20, 153, 212);
-  border: ridge white 1px;
-  box-shadow: 0 1px 2px 0 black;
-  margin-right: 5px;
+
 }
 
 .task-item span {

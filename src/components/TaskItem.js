@@ -1,13 +1,18 @@
 import React, { PropTypes } from 'react'
 
 
-const TaskItem = ({ id, text, onComplete, onSort, classString }) => {
+const TaskItem = ({ id, text, onComplete, onDelete, onSort, classString }) => {
 
-  const handleClick = (event) => {
+  const handleComplete = (event) => {
     if ( event.type === 'dblclick' ){
       const options = { event: event, id: id }
       onComplete(options)
     }
+
+  }
+
+  const handleDelete = () => {
+    onDelete({ id: id })
   }
 
   const handleOnSortUp = () => {
@@ -19,13 +24,15 @@ const TaskItem = ({ id, text, onComplete, onSort, classString }) => {
   }
 
 
+
   return (
-      <div className={classString} onDoubleClick={handleClick} key={id}>
-        <span>{text}</span>
-        <div className="task-buttons">
-          <button onClick={handleOnSortUp}>&#8593;</button>
-          <button onClick={handleOnSortDown}>&#8595;</button>
-        </div>
+      <div className={classString} key={id}>
+        <span onDoubleClick={handleComplete}>{text}</span>
+          <div className="task-buttons">
+            <button className="sort btn" onClick={ handleOnSortUp }> &#8593; </button>
+            <button className="sort btn" onClick={ handleOnSortDown }> &#8595; </button>
+            <button className="delete btn" onClick={ handleDelete }> x </button>
+          </div>
       </div>
   )
 }
@@ -33,10 +40,11 @@ const TaskItem = ({ id, text, onComplete, onSort, classString }) => {
 TaskItem.propTypes = {
   classString:  PropTypes.string.isRequired,
   handleClick:  PropTypes.func,
-  id:           PropTypes.number.isRequired,
-  onComplete:   PropTypes.func,
-  onSort:       PropTypes.func.isRequired,
-  text:         PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  onComplete: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onSort: PropTypes.func.isRequired,
+  text: PropTypes.string.isRequired,
 }
 
 export default TaskItem

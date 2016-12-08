@@ -7,12 +7,14 @@ class App extends Component {
   constructor( props ){
     super( props )
     this.state = {
+      fetchString: 'http://localhost:5000/task',
       tasks: [],
       textString: ''
     }
     this.onChange = this.onChange.bind( this )
-    this.onSave = this.onSave.bind( this )
     this.onComplete = this.onComplete.bind( this )
+    this.onDelete = this.onDelete.bind( this )
+    this.onSave = this.onSave.bind( this )
     this.onSort = this.onSort.bind( this )
     this.updatePriority = this.updatePriority.bind( this )
   }
@@ -25,7 +27,7 @@ class App extends Component {
       })
     }
 
-    const fetchString = 'http://localhost:5000/task'
+    const fetchString = this.state.fetchString
     fetch( fetchString, fetchIsHappenning )
     .then( data => data.json() )
     .then( data => {
@@ -41,7 +43,6 @@ class App extends Component {
   onComplete({ id }) {
 
     const tasks = this.state.tasks
-
     const fetchIsHappenning = {
       method: 'PUT',
       mode: 'cors',
@@ -50,7 +51,7 @@ class App extends Component {
         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8' }),
       body: `completed=True&id=${id}`
     }
-    const fetchString = 'http://localhost:5000/task'
+    const fetchString = this.state.fetchString
     fetch( fetchString, fetchIsHappenning )
     .then( () => {
       tasks.forEach( task => {
@@ -58,6 +59,37 @@ class App extends Component {
       })
       this.setState({ tasks })
     })
+  }
+
+  onDelete({ id }) {
+    const tasks = this.state.tasks
+    const newTasks = []
+    let x = 0
+    for ( let i in tasks ) {
+      if ( tasks[i].id !== id ){
+        tasks[i].priority = x
+        newTasks.push( tasks[i] )
+        x++
+      }
+    }
+    this.setState({ tasks: newTasks })
+
+    const fetchIsHappenning = {
+      method: 'DELETE',
+      mode: 'cors',
+      headers: new Headers({
+        'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8' })
+          }
+
+    let deleteString = this.state.fetchString
+    deleteString += `/${id}`
+    fetch( deleteString, fetchIsHappenning )
+
+    newTasks.forEach( (task, index) => {
+      this.updatePriority( task.id, index )
+    })
+
 
   }
 
@@ -75,7 +107,8 @@ class App extends Component {
         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8' }),
       body: `text=${taskText}&priority=${nextPriority}`
     }
-    const fetchString = 'http://localhost:5000/task'
+    const fetchString = this.state.fetchString
+
     fetch( fetchString, fetchIsHappenning )
     .then( response => response.json() )
     .then( raw_task => {
@@ -96,7 +129,6 @@ class App extends Component {
         taskPriority = tasks[index].priority
       }
     }
-    console.log(tasks.length);
 
     if ( taskPriority <= 0 && isUp ){
       return
@@ -109,12 +141,12 @@ class App extends Component {
     if ( isUp ){
       swapID = tasks[ taskPriority - 1 ].id
       swapPriority = taskPriority - 1
-     }
+    }
 
-     else {
-       swapID = tasks[ taskPriority + 1 ].id
-       swapPriority = taskPriority + 1
-     }
+    else {
+      swapID = tasks[ taskPriority + 1 ].id
+      swapPriority = taskPriority + 1
+    }
 
 
     this.updatePriority( id, swapPriority )
@@ -153,7 +185,7 @@ class App extends Component {
         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8' }),
       body: `priority=${priority}&id=${id}`
     }
-    const fetchString = 'http://localhost:5000/task'
+    const fetchString = this.state.fetchString
     fetch( fetchString, fetchIsHappenning )
 
   }
@@ -162,7 +194,7 @@ class App extends Component {
     return (
       <div className="app">
         <EntryBox onChange={this.onChange} textString={this.state.textString} onSave={this.onSave}/>
-        <TaskList onComplete={this.onComplete} onSort={this.onSort} tasks={this.state.tasks} />
+        <TaskList onComplete={this.onComplete} onDelete={this.onDelete} onSort={this.onSort} tasks={this.state.tasks} />
       </div>
     )
   }
