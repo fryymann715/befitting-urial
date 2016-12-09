@@ -14,6 +14,4 @@ router.get('/task/:id', Task.getById )
 router.put('/task', Task.update )
 router.delete('/task/:id', Task.delete )
 
-
-
 module.exports = router;

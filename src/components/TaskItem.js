@@ -5,23 +5,15 @@ const TaskItem = ({ completed, id, text, onComplete, onDelete, onSort, classStri
 
   const handleComplete = (event) => {
     if ( event.type === 'dblclick' ){
-
-      console.log("CLICKING")
-
       let options
-
       if( completed ){
         options = { id: id, completed: false }
-        console.log("TRUE:", completed)
       }
       else {
         options = { id: id, completed: true }
-        console.log("FALSE:", completed)
       }
-
       onComplete(options)
     }
-
   }
 
   const handleDelete = () => {
@@ -35,8 +27,6 @@ const TaskItem = ({ completed, id, text, onComplete, onDelete, onSort, classStri
   const handleOnSortDown = () => {
     onSort({ id: id })
   }
-
-
 
   return (
       <div className={classString} key={id}>
