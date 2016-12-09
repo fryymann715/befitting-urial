@@ -4,10 +4,10 @@
 
 - [x] - Display Tasks
 - [x] - Add a new Task
-- [] - Update tasks
-- [] - Delete tasks
+- [x] - Update tasks
+- [x] - Delete tasks
 - [x] - Mark tasks as complete
-- [] - Set priority for tasks
+- [x] - Set priority for tasks
 
 - [x] - Use Postgres for database
 - [x] - Handle database interactions using pg-promise
