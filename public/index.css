@@ -81,6 +81,9 @@
 
 .completed {
   background-color: rgba(29, 179, 26, 0.72);
+}
+
+.completed input {
   font-style: italic;
   text-decoration: line-through;
   color: white;

@@ -20,6 +20,7 @@ class App extends Component {
     this.onSubmitEdit = this.onSubmitEdit.bind( this )
     this.onSave = this.onSave.bind( this )
     this.onSort = this.onSort.bind( this )
+    this.sortTasks = this.sortTasks.bind( this )
     this.updatePriority = this.updatePriority.bind( this )
   }
 
@@ -38,7 +39,10 @@ class App extends Component {
     .then( data => {
       const tasks = data.data
       tasks.map( task => task['beingEdited'] = false )
-      this.setState({ tasks })
+
+      const sortedTasks = this.sortTasks( tasks )
+
+      this.setState({ tasks: sortedTasks })
     })
   }
 
@@ -218,18 +222,23 @@ class App extends Component {
       return task
     })
 
+    const sortedTasks = this.sortTasks( unsortedTasks )
+
+    this.setState({ tasks: sortedTasks })
+  }
+
+  sortTasks( tasks ) {
     const sortedTasks = []
 
-    for( let i=0; i < unsortedTasks.length; i++) {
+    for( let i=0; i < tasks.length; i++) {
 
-      for( let x=0; x < unsortedTasks.length; x++ ) {
-        if ( unsortedTasks[x].priority === i ){
-          sortedTasks.push( unsortedTasks[ x ] )
+      for( let x=0; x < tasks.length; x++ ) {
+        if ( tasks[x].priority === i ){
+          sortedTasks.push( tasks[ x ] )
         }
       }
     }
-
-    this.setState({ tasks: sortedTasks })
+    return sortedTasks
   }
 
   updatePriority( id, priority ) {
