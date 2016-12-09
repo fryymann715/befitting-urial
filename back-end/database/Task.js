@@ -16,15 +16,16 @@ const Task = {
 
       db.query( `
         SELECT
-        tasks.id, tasks.text, tasks.priority, tasks.completed
+        tasks.*
         FROM tasks
         JOIN task_lists
         ON tasks.id = task_lists.task_id
         JOIN lists
         ON task_lists.list_id = lists.id
+
          WHERE lists.id = 1;
          `)
-      .then(tasks => response.status(200).json({status : 'success', data : tasks, message : 'SUCCESSFUL RETRIEVAL'}))
+      .then( tasks => response.status(200).json({status : 'success', data : tasks, message : 'SUCCESSFUL RETRIEVAL'}))
       .catch( error => next( error ))
     },
 
@@ -58,9 +59,17 @@ const Task = {
         response.status(406).json({ status: 'failure', message: 'You suck' })
       }
     },
+
     delete: ( request, response, next ) => {
       const { id } = request.params
-      db.none( `DELETE FROM tasks WHERE id = ${id}` ).then( response.status(200).json({status: 'success', message: 'SUCCESSFULLY DELETED'}) ).catch( error => next( error ))
+      db.none( `
+        BEGIN TRANSACTION;
+        DELETE FROM task_lists WHERE task_id = ${id};
+        DELETE FROM tasks WHERE id = ${id};
+        COMMIT;
+        ` )
+      .then( response.status( 200 ).json({ status: 'success', message: 'SUCCESSFULLY DELETED' }) )
+      .catch( error => next( error ))
     }
 }
 
