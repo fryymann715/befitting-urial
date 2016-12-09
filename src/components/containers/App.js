@@ -20,6 +20,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+
     const fetchIsHappenning = {
       method: 'GET', mode: 'cors', headers: new Headers({
         'Content-Type': 'application/json',
@@ -177,6 +178,7 @@ class App extends Component {
   }
 
   updatePriority( id, priority ) {
+
     const fetchIsHappenning = {
       method: 'PUT',
       mode: 'cors',

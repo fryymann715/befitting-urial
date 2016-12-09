@@ -25,3 +25,18 @@ CREATE TABLE "task_lists" (
 
 ALTER TABLE "task_lists" ADD FOREIGN KEY ("task_id") REFERENCES "tasks" ("id");
 ALTER TABLE "task_lists" ADD FOREIGN KEY ("list_id") REFERENCES "lists" ("id");
+
+
+const arr = [ 1, 2, 3, 7, 4, 9 ]
+
+let idStr = ''
+
+for ( let i=0; i < arr.len; i++ ){
+
+  idStr += `${ arr[i] }`
+  if ( i != arr.len - 2 ){
+    idStr += ', '
+  }
+
+}
+idStr = '1, 2, 3, 7, 4, 9'
