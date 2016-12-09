@@ -4,27 +4,26 @@ const Task = {
 
     add: ( request, response, next ) => {
       const { text, priority } = request.body
-      db.any( `INSERT INTO tasks (text, priority) VALUES ('${text}', '${priority}') RETURNING *` )
-      .then( task => {
-        //NOTE: this may be an issue.
-        db.none( `INSERT INTO task_lists (task_id, list_id) VALUES (${task[0].id}, 1)` )
-        response.status(200).json({ status: 'success', data: task[0], message: 'SUCCESSFUL ADD' })} )
-      .catch( error => next( error ))
+
+      if( text === undefined || text === '' ) {
+        response.status(303).json({ status: 'failure', message: 'Task text can not be a blank string.' })
+      } else {
+        db.any( `INSERT INTO tasks (text, priority) VALUES ('${text}', '${priority}') RETURNING *` )
+        .then( task => {
+          //NOTE: this may be an issue.
+          db.none( `INSERT INTO task_lists (task_id, list_id) VALUES (${task[0].id}, 1)` )
+          response.status(200).json({ status: 'success', data: task[0], message: 'SUCCESSFUL ADD' })} )
+        .catch( error => next( error ))
+        }
     },
 
     getAll: ( request, response, next ) => {
-
-      db.query( `
-        SELECT
-        tasks.*
-        FROM tasks
-        JOIN task_lists
-        ON tasks.id = task_lists.task_id
-        JOIN lists
-        ON task_lists.list_id = lists.id
-
-         WHERE lists.id = 1;
-         `)
+      db.query(`
+        SELECT tasks.* FROM tasks
+        JOIN task_lists ON tasks.id = task_lists.task_id
+        JOIN lists ON task_lists.list_id = lists.id
+        WHERE lists.id = 1;
+        `)
       .then( tasks => response.status(200).json({status : 'success', data : tasks, message : 'SUCCESSFUL RETRIEVAL'}))
       .catch( error => next( error ))
     },

@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react'
 
 const TaskItem = ({ completed, id, text, onComplete, onDelete, onSort, classString }) => {
 
-  const handleComplete = (event) => {
+  const handleClick = (event) => {
     if ( event.type === 'dblclick' ){
       let options
       if( completed ){
@@ -14,6 +14,13 @@ const TaskItem = ({ completed, id, text, onComplete, onDelete, onSort, classStri
       }
       onComplete(options)
     }
+
+    if( event.type === 'click' ) {
+      //TODO: Select the span and make it typeable
+      console.log(event)
+
+    }
+
   }
 
   const handleDelete = () => {
@@ -30,7 +37,7 @@ const TaskItem = ({ completed, id, text, onComplete, onDelete, onSort, classStri
 
   return (
       <div className={classString} key={id}>
-        <span onDoubleClick={handleComplete}>{text}</span>
+        <span onDoubleClick={handleClick}>{text}</span>
           <div className="task-buttons">
             <button className="sort btn" onClick={ handleOnSortUp }> &#8593; </button>
             <button className="sort btn" onClick={ handleOnSortDown }> &#8595; </button>
