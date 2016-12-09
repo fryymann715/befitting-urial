@@ -130,7 +130,17 @@ class App extends Component {
 
     fetch( fetchString, fetchIsHappening )
     .then( () => {
-      console.log("SUCCESS:")
+      const tasks = this.state.tasks
+      tasks.map( task => {
+        if ( task.id === id ){
+          task.text = editedString
+          task.beingEdited = false
+        }
+        else {
+          task.beingEdited = false
+        }
+      })
+      this.setState({ tasks, editTaskString: '' })
     })
   }
 

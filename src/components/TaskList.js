@@ -27,6 +27,7 @@ const TaskList = ({ editTaskString, onComplete, onDelete, onEditTask, onSetEdit,
 
     return (
       <TaskItem
+        beingEdited={task.beingEdited}
         classString={classString}
         completed={task.completed}
         editTaskString={editTaskString}
