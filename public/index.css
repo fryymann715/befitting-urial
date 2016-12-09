@@ -69,6 +69,12 @@
 
 }
 
+.task-item input {
+  background-color: transparent;
+  border: none;
+  width: 100%;
+}
+
 .task-item span {
   width: 50%;
 }

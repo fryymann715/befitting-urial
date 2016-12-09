@@ -9,11 +9,15 @@ class App extends Component {
     this.state = {
       fetchString: 'http://localhost:5000/task',
       tasks: [],
-      textString: ''
+      textString: '',
+      editTaskString: ''
     }
     this.onChange = this.onChange.bind( this )
     this.onComplete = this.onComplete.bind( this )
     this.onDelete = this.onDelete.bind( this )
+    this.onEditTask = this.onEditTask.bind( this )
+    this.onSetEdit = this.onSetEdit.bind( this )
+    this.onSubmitEdit = this.onSubmitEdit.bind( this )
     this.onSave = this.onSave.bind( this )
     this.onSort = this.onSort.bind( this )
     this.updatePriority = this.updatePriority.bind( this )
@@ -33,6 +37,7 @@ class App extends Component {
     .then( data => data.json() )
     .then( data => {
       const tasks = data.data
+      tasks.map( task => task['beingEdited'] = false )
       this.setState({ tasks })
     })
   }
@@ -40,6 +45,7 @@ class App extends Component {
   onChange( event ) {
     this.setState({ textString: event.target.value })
   }
+
 
   onComplete({ id, completed }) {
 
@@ -90,8 +96,52 @@ class App extends Component {
     newTasks.forEach( (task, index) => {
       this.updatePriority( task.id, index )
     })
+  }
 
+  onEditTask ( event ) {
+    this.setState({ editTaskString: event.target.value })
+  }
 
+  onSetEdit( id ) {
+    const tasks = this.state.tasks
+    tasks.map( task => {
+      if ( task.id === id ) {
+        task.beingEdited = true
+      } else {
+        task.beingEdited = false
+      }
+    })
+    this.setState({ tasks, editTaskString: '' })
+  }
+
+  onSubmitEdit( id ) {
+    const editedString = this.state.editTaskString
+
+    const fetchIsHappening = {
+      method: 'PUT',
+      mode: 'cors',
+      headers: new Headers({
+        'Accept': 'application/json, application/xml, text/plain, text/html. *.*',
+        'Content-type': 'application/x-www-form-urlencoded; charset=utf-8' }),
+      body: `text=${editedString}&id=${id}`
+    }
+
+    const fetchString = this.state.fetchString
+
+    fetch( fetchString, fetchIsHappening )
+    .then( () => {
+      const tasks = this.state.tasks
+      tasks.map( task => {
+        if ( task.id === id ){
+          task.text = editedString
+          task.beingEdited = false
+        }
+        else {
+          task.beingEdited = false
+        }
+      })
+      this.setState({ tasks, editTaskString: '' })
+    })
   }
 
   onSave() {
@@ -104,6 +154,7 @@ class App extends Component {
     if ( taskText === undefined || taskText === '' ){
       return
     }
+
     const fetchIsHappenning = {
       method: 'POST',
       mode: 'cors',
@@ -200,7 +251,15 @@ class App extends Component {
     return (
       <div className="app">
         <EntryBox onChange={this.onChange} textString={this.state.textString} onSave={this.onSave} />
-        <TaskList onComplete={this.onComplete} onDelete={this.onDelete} onSort={this.onSort} tasks={this.state.tasks} />
+        <TaskList
+          editTaskString={this.state.editTaskString}
+          onComplete={this.onComplete}
+          onDelete={this.onDelete}
+          onEditTask={this.onEditTask}
+          onSetEdit={this.onSetEdit}
+          onSubmitEdit={this.onSubmitEdit}
+          onSort={this.onSort}
+          tasks={this.state.tasks} />
       </div>
     )
   }
