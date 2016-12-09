@@ -100,6 +100,10 @@ class App extends Component {
     const nextPriority = taskArray.length
 
     const taskText = this.state.textString
+
+    if ( taskText === undefined || taskText === '' ){
+      return
+    }
     const fetchIsHappenning = {
       method: 'POST',
       mode: 'cors',
